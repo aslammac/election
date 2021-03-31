@@ -44,7 +44,7 @@ class ContactScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${booth.id}. ${booth.pollingStation}',
+                          '${booth.partNum} . ${booth.pollingStation}',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
@@ -57,22 +57,27 @@ class ContactScreen extends StatelessWidget {
                             booth.contactModel.operatorNumber,
                             _makePhoneCall),
                         listTileWidget(
-                            'Control room officer',
+                            'Control Room Officer',
                             booth.contactModel.taName,
                             booth.contactModel.taNumber,
                             _makePhoneCall),
                         listTileWidget(
-                            'Akshaya block co-ordinator',
-                            booth.contactModel.adpaName,
-                            booth.contactModel.adpaNumber,
+                            'Akshaya Entrepreneur',
+                            booth.contactModel.sectorName,
+                            booth.contactModel.sectorNumber,
                             _makePhoneCall),
                         listTileWidget(
-                            'BSNL officer',
+                            'BSNL Officer',
                             booth.contactModel.bsnlName,
                             booth.contactModel.bsnlNumber,
                             _makePhoneCall),
                         listTileWidget(
-                            'IT MISSION engineer',
+                            'Akshaya Block Co-ordinator',
+                            booth.contactModel.adpaName,
+                            booth.contactModel.adpaNumber,
+                            _makePhoneCall),
+                        listTileWidget(
+                            'IT Mission Engineer',
                             booth.contactModel.hseName,
                             booth.contactModel.hseNumber,
                             _makePhoneCall,

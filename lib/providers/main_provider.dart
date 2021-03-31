@@ -227,23 +227,27 @@ class MainProvider with ChangeNotifier {
     _isLoading = true;
     _pollingStationNameTemp = null;
     _lsgaSelectedList = _lsgaList[lac];
+    _pollingStationList = [];
     notifyListeners();
   }
 
   Future<void> fetchBooth(String lsga) async {
+    _pollingStationNameTemp = null;
     _lsgaName = lsga;
-    notifyListeners();
     _pollingStationList = [];
-    final prefs = await SharedPreferences.getInstance();
-    String url = prefs.getString('url');
-    if (url == null) {
-      final DocumentSnapshot urlQuery =
-          await firebase.collection('static').doc('realtimeDb').get();
-      String url = urlQuery.data()['db0'];
-      await prefs.setString('url', url);
-    } else {
-      url = prefs.getString('url');
-    }
+    notifyListeners();
+    // final prefs = await SharedPreferences.getInstance();
+    // // String url = prefs.getString('url');
+    // // // if (url == null) {
+    // // //   final DocumentSnapshot urlQuery =
+    // // //       await firebase.collection('static').doc('realtimeDb').get();
+    // // //   String url = urlQuery.data()['db0'];
+    // // //   await prefs.setString('url', url);
+    // // // } else {
+    // // //   url = prefs.getString('url');
+    // // // }
+    String url =
+        'https://election-c7bad-default-rtdb.firebaseio.com/1844vNCBfUOZWF8RGWbJZsUxJB-1AGrMNLJpVLT6R2Jo/primary.json';
     final _filter = '?orderBy="lsga"&equalTo="$lsga"';
     final _url = "$url$_filter";
 

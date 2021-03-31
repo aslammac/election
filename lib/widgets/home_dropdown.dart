@@ -112,53 +112,56 @@ class _HomeDropdownState extends State<HomeDropdown> {
                   ),
                 ),
                 SizedBox(height: 15),
-                Container(
-                  width: 300,
-                  child: Neumorphic(
-                    style: NeumorphicStyle(
-                      shape: NeumorphicShape.flat,
-                      boxShape: NeumorphicBoxShape.roundRect(
-                          BorderRadius.circular(8)),
-                      depth: 5,
-                      lightSource: LightSource.topLeft,
-                    ),
-                    padding: const EdgeInsets.only(left: 15, right: 17),
-                    child: DropdownSearch<BoothModel>(
-                      searchBoxController: controller,
-                      showClearButton: true,
-                      dropdownSearchDecoration: InputDecoration(
-                        border: InputBorder.none,
+                if (Provider.of<MainProvider>(context)
+                    .pollingStaionList
+                    .isNotEmpty)
+                  Container(
+                    width: 300,
+                    child: Neumorphic(
+                      style: NeumorphicStyle(
+                        shape: NeumorphicShape.flat,
+                        boxShape: NeumorphicBoxShape.roundRect(
+                            BorderRadius.circular(8)),
+                        depth: 5,
+                        lightSource: LightSource.topLeft,
                       ),
-                      enabled: Provider.of<MainProvider>(context)
-                              .pollingStaionList
-                              .isEmpty
-                          ? false
-                          : true,
-                      autoFocusSearchBox: true,
-                      searchBoxDecoration: InputDecoration(
-                        border: null,
+                      padding: const EdgeInsets.only(left: 15, right: 17),
+                      child: DropdownSearch<BoothModel>(
+                        searchBoxController: controller,
+                        showClearButton: true,
+                        dropdownSearchDecoration: InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        enabled: Provider.of<MainProvider>(context)
+                                .pollingStaionList
+                                .isEmpty
+                            ? false
+                            : true,
+                        autoFocusSearchBox: true,
+                        searchBoxDecoration: InputDecoration(
+                          border: null,
+                        ),
+                        showSearchBox: true,
+                        maxHeight: 350,
+                        mode: Mode.DIALOG,
+                        dropdownBuilderSupportsNullItem: true,
+                        showSelectedItem: true,
+                        hint: 'Select Polling Station',
+                        items: Provider.of<MainProvider>(context)
+                            .pollingStaionList
+                            .map((e) => e)
+                            .toList(),
+                        itemAsString: (BoothModel item) => item.boothAsString(),
+                        compareFn: (item, selectedItem) =>
+                            item.isEqual(selectedItem),
+                        onChanged: (value) =>
+                            Provider.of<MainProvider>(context, listen: false)
+                                .selectPollingBooth(value),
+                        selectedItem: Provider.of<MainProvider>(context)
+                            .pollingStationNameTemp,
                       ),
-                      showSearchBox: true,
-                      maxHeight: 350,
-                      mode: Mode.DIALOG,
-                      dropdownBuilderSupportsNullItem: true,
-                      showSelectedItem: true,
-                      hint: 'Select Polling Station',
-                      items: Provider.of<MainProvider>(context)
-                          .pollingStaionList
-                          .map((e) => e)
-                          .toList(),
-                      itemAsString: (BoothModel item) => item.boothAsString(),
-                      compareFn: (item, selectedItem) =>
-                          item.isEqual(selectedItem),
-                      onChanged: (value) =>
-                          Provider.of<MainProvider>(context, listen: false)
-                              .selectPollingBooth(value),
-                      selectedItem: Provider.of<MainProvider>(context)
-                          .pollingStationNameTemp,
                     ),
                   ),
-                ),
                 SizedBox(height: 15),
                 Container(
                   width: 300,
@@ -175,8 +178,19 @@ class _HomeDropdownState extends State<HomeDropdown> {
                     padding: const EdgeInsets.only(
                         left: 15, top: 4, bottom: 4, right: 17),
                     child: TextButton(
-                        onPressed: Provider.of<MainProvider>(context).isLoading
-                            ? null
+                        onPressed: Provider.of<MainProvider>(context)
+                                    .pollingStationNameTemp ==
+                                null
+                            ? () {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(
+                                    'Please select polling station!',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  backgroundColor: Colors.redAccent,
+                                ));
+                              }
                             : () {
                                 try {
                                   Provider.of<MainProvider>(context,
